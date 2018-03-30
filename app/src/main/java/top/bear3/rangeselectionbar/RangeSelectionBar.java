@@ -2,6 +2,7 @@ package top.bear3.rangeselectionbar;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -18,7 +19,7 @@ import android.view.View;
  */
 
 public class RangeSelectionBar extends View {
-    private static final int COLOR_THUMB = 0x00A3DA;
+    private static final int COLOR_THUMB = 0xFF00A3DA;
 
     private int max, low, high;         // 最大值，低游标和高游标
     private int width, height;          // 控件高和宽
@@ -48,6 +49,22 @@ public class RangeSelectionBar extends View {
 
     public RangeSelectionBar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
+        max = 1000;
+        low = 500;
+        high = 700;
+
+        lowThumbWidth = (int) dp2px(6);
+        highThumbWidth = (int) dp2px(6);
+
+        lowAreaColor = Color.GRAY;
+        middleAreaColor = Color.RED;
+        highAreaColor = Color.GRAY;
+
+        barHeight = (int) dp2px(3);
+
+        paint = new Paint();
+        paint.setAntiAlias(true);
     }
 
     @Override
@@ -58,6 +75,14 @@ public class RangeSelectionBar extends View {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
+
+       width = getWidth();
+       height = getHeight();
+
+       barWidth = width - lowThumbWidth / 2 - highThumbWidth / 2;
+
+       barTop = (height - barHeight) / 2;
+       barBottom = barTop + barHeight;
     }
 
     @Override
@@ -71,6 +96,9 @@ public class RangeSelectionBar extends View {
 
         lowPosition = (int) (low / (double) max * barWidth + lowThumbWidth / 2);
         highPosition = (int) (high / (double) max * barWidth + lowThumbWidth / 2);
+
+        drawBar(canvas);
+        drawThumb(canvas);
     }
 
     private void drawBar(Canvas canvas) {
@@ -87,7 +115,9 @@ public class RangeSelectionBar extends View {
     }
 
     private void drawThumb(Canvas canvas) {
-
+        paint.setColor(COLOR_THUMB);
+        canvas.drawCircle(lowPosition, height / 2, dp2px(6), paint);
+        canvas.drawCircle(highPosition, height / 2, dp2px(6), paint);
     }
 
     private float dp2px(float dp) {
