@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="top.bear3.rangeselectionbar.MainActivity">
 
     <top.bear3.rangeselectionbar.RangeSelectionBar
+        android:id="@+id/sb"
         android:layout_width="match_parent"
         android:layout_height="30dp" />
 
